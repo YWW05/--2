@@ -10,6 +10,10 @@ function App() {
     setShowSelector(true);
   };
 
+  const handleBack = () => {
+    setShowSelector(false);
+  };
+
   return (
     <div className="app">
       <WaveBackground />
@@ -23,7 +27,7 @@ function App() {
           </div>
         </main>
       ) : (
-        <AudioSelector />
+        <AudioSelector onBack={handleBack} />
       )}
     </div>
   )

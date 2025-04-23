@@ -9,6 +9,9 @@ export class AudioAnalyzer {
   private gainNode: GainNode;
   private audioBuffer: AudioBuffer | null = null;
   private isPlaying: boolean = false;
+  private startTime: number = 0;
+  private pausedTime: number = 0;
+  private offset: number = 0;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -52,8 +55,25 @@ export class AudioAnalyzer {
     this.source = this.audioContext.createBufferSource();
     this.source.buffer = this.audioBuffer;
     this.source.connect(this.analyser);
-    this.source.start(0);
+    
+    // 从暂停的位置继续播放
+    this.startTime = this.audioContext.currentTime - this.offset;
+    this.source.start(0, this.offset);
+    
     this.isPlaying = true;
+  }
+
+  /**
+   * 暂停播放
+   */
+  pause(): void {
+    if (this.source && this.isPlaying) {
+      this.offset = this.getCurrentTime();
+      this.source.stop();
+      this.source.disconnect();
+      this.source = null;
+      this.isPlaying = false;
+    }
   }
 
   /**
@@ -66,6 +86,8 @@ export class AudioAnalyzer {
       this.source = null;
     }
     this.isPlaying = false;
+    this.offset = 0;
+    this.startTime = 0;
   }
 
   /**
@@ -74,6 +96,40 @@ export class AudioAnalyzer {
    */
   setVolume(value: number): void {
     this.gainNode.gain.value = Math.max(0, Math.min(1, value));
+  }
+
+  /**
+   * 获取当前播放时间
+   * @returns 当前播放时间（秒）
+   */
+  getCurrentTime(): number {
+    if (!this.isPlaying) {
+      return this.offset;
+    }
+    return this.audioContext.currentTime - this.startTime;
+  }
+
+  /**
+   * 设置当前播放时间
+   * @param time 目标时间（秒）
+   */
+  setCurrentTime(time: number): void {
+    const wasPlaying = this.isPlaying;
+    if (wasPlaying) {
+      this.pause();
+    }
+    this.offset = Math.max(0, Math.min(time, this.getDuration()));
+    if (wasPlaying) {
+      this.play();
+    }
+  }
+
+  /**
+   * 获取音频总时长
+   * @returns 音频总时长（秒）
+   */
+  getDuration(): number {
+    return this.audioBuffer ? this.audioBuffer.duration : 0;
   }
 
   /**
