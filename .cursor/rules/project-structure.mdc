@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目结构指南
+
+本项目是一个基于Web Audio API的音频分析系统，结合TouchDesigner实现实时音乐可视化效果。
+
+## 核心目录结构
+
+### Web端 ([web/src/](mdc:web/src))
+- `audio/`: 音频处理核心模块
+- `components/`: React组件
+- `utils/`: 工具函数
+
+### 主要配置文件
+- [vite.config.ts](mdc:web/vite.config.ts): Vite构建配置
+- [package.json](mdc:web/package.json): 项目依赖配置
+
+## 开发规范
+
+### TypeScript规范
+- 使用严格模式
+- 禁止隐式any
+- 启用严格空值检查
+
+### React开发规范
+- 使用函数式组件
+- 使用React Hooks
+- 使用TypeScript类型定义
+
+### 代码风格
+- 使用2空格缩进
+- 最大行长度：100字符
+- 使用JSDoc注释文档
+

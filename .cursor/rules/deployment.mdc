@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 部署与环境配置指南
+
+## 中国区部署优化
+
+### 网络资源
+- 使用阿里云CDN
+- 部署在国内服务器（阿里云/腾讯云）
+- 静态资源使用阿里云OSS
+
+### 镜像源配置
+```bash
+# NPM配置
+npm config set registry https://mirrors.tuna.tsinghua.edu.cn/npm/
+
+# Docker配置
+registry-mirrors: ["https://mirror.ccs.tencentyun.com"]
+```
+
+## 服务器要求
+- CPU: 8核心以上
+- 内存: 16GB以上
+- 带宽: 100Mbps以上
+- 系统: CentOS 7.9 或 Alibaba Cloud Linux 2
+
+## 软件版本要求
+- Node.js >= 14.0.0
+- TouchDesigner >= 2022.28260
+- Docker >= 20.10
+- Nginx >= 1.18
+- MongoDB >= 4.4
+- Redis >= 6.0
+
