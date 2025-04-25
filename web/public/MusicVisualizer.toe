@@ -1,0 +1,28 @@
+// TouchDesigner Text DAT - WebSocket接收器
+
+def onReceiveData(data):
+    # 解析接收到的JSON数据
+    try:
+        data = json.loads(data)
+        
+        # 更新参数到对应的CHOP
+        op('frequency_data').vals = data['frequency']
+        op('volume').par.value0 = data['volume']
+        op('bpm').par.value0 = data['bpm']
+        op('energy').par.value0 = data['energy']
+        op('complexity').par.value0 = data['complexity']
+        op('rhythm').par.value0 = data['rhythm']
+        op('timbre_data').vals = data['timbre']
+        op('emotion').par.value0 = data['emotion']
+        
+    except Exception as e:
+        print('Error processing data:', e)
+
+# WebSocket服务器设置
+ws = op('websocket1')
+ws.par.Active = True
+ws.par.Port = 7000
+ws.par.Address = 'localhost'
+
+# 绑定数据接收事件
+ws.bind('message', onReceiveData) 
