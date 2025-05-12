@@ -51,41 +51,43 @@ const AudioSelector: React.FC<AudioSelectorProps> = ({ onBack }) => {
   return (
     <div className="audio-selector">
       {!selectedFile ? (
-        <div 
-          className={`drop-zone ${isDragging ? 'dragging' : ''}`}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          <div className="selector-header">
-            <button className="back-button" onClick={onBack}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
+        <>
+          <div 
+            className={`drop-zone ${isDragging ? 'dragging' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <div className="selector-header">
+              <button className="back-button" onClick={onBack}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <h2>选择您的音乐</h2>
+            </div>
+            <div className="upload-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 15V3m0 0L8 7m4-4l4 4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17" />
               </svg>
-            </button>
-            <h2>选择您的音乐</h2>
+            </div>
+            <p>从我们的收藏中选择或使用您自己的音乐来创作令人惊叹的东西</p>
+            <div className="buttons">
+              <label className="upload-button">
+                使用您自己的音乐
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileSelect}
+                  style={{ display: 'none' }}
+                />
+              </label>
+              <button className="library-button">
+                从我们的系统中选择
+              </button>
+            </div>
           </div>
-          <div className="upload-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 15V3m0 0L8 7m4-4l4 4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17" />
-            </svg>
-          </div>
-          <p>从我们的收藏中选择或使用您自己的音乐来创作令人惊叹的东西</p>
-          <div className="buttons">
-            <label className="upload-button">
-              使用您自己的音乐
-              <input
-                type="file"
-                accept="audio/*"
-                onChange={handleFileSelect}
-                style={{ display: 'none' }}
-              />
-            </label>
-            <button className="library-button">
-              从我们的系统中选择
-            </button>
-          </div>
-        </div>
+        </>
       ) : (
         <div className="player-container">
           <AudioPlayer
@@ -100,6 +102,24 @@ const AudioSelector: React.FC<AudioSelectorProps> = ({ onBack }) => {
           </button>
         </div>
       )}
+      {/* 示例视频区域始终显示，无论是否选择音频文件 */}
+      <div className="video-samples">
+        <h3 className="video-samples-title">示例视频</h3>
+        <div className="video-list">
+          <div className="video-item">
+            <video src="/ambient.mp4" controls width="180" height="100" preload="metadata" />
+          </div>
+          <div className="video-item">
+            <video src="/bass.mp4" controls width="180" height="100" preload="metadata" />
+          </div>
+          <div className="video-item">
+            <video src="/mid.mp4" controls width="180" height="100" preload="metadata" />
+          </div>
+          <div className="video-item">
+            <video src="/treble.mp4" controls width="180" height="100" preload="metadata" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
