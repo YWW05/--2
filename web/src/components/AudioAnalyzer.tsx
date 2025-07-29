@@ -57,7 +57,7 @@ export const AudioAnalyzer: React.FC<AudioAnalyzerProps> = ({
         </span>
       </p>
       <p>
-        提示：请确保TouchDesigner已启动并监听7000端口
+        提示：请确保TouchDesigner已启动并监听8000端口
       </p>
     </div>
   );

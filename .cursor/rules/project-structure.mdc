@@ -35,3 +35,51 @@ alwaysApply: true
 - 最大行长度：100字符
 - 使用JSDoc注释文档
 
+### 1. 项目与TouchDesigner通信机制
+
+- **通信方式**：项目已实现通过 WebSocket 向 TouchDesigner 实时发送音频分析数据。
+- **核心代码位置**：`web/src/ws/audioSocket.ts`
+  - `AudioSocket` 类负责WebSocket连接、重连、数据发送、事件监听等。
+  - 默认连接地址为 `ws://localhost:7000`，可通过构造函数参数自定义。
+  - 发送的数据包括频率、音量、BPM、能量、复杂度、节奏强度、音色、情感等。
+
+- **数据流**：
+  1. 音频分析（`audio/`模块）
+  2. 分析结果由 `AnalysisDataSender` 定时采集并通过 `audioSocket.sendAnalysisData` 发送
+  3. WebSocket连接TouchDesigner，实时推送数据
+
+### 2. 端口与地址配置
+
+- **默认端口**：`7000`
+- **你的需求**：TouchDesigner监听端口为 `8000`
+- **解决方法**：只需在创建 `AudioSocket` 实例时传入 `ws://localhost:8000`，即可连接到TD的8000端口。
+
+### 3. 如何修改端口
+
+#### 方法一：全局修改
+修改 `web/src/ws/audioSocket.ts` 最后一行：
+```ts
+export const audioSocket = new AudioSocket('ws://localhost:8000');
+```
+
+#### 方法二：支持运行时配置
+可扩展为从配置文件或环境变量读取端口，或在前端页面提供输入框让用户自定义端口。
+
+---
+
+### 4. 你需要做什么？
+
+- **如果只需连接8000端口**，直接修改上述实例化参数即可。
+- **TouchDesigner端**需确保WebSocket DAT监听`8000`端口，协议为WebSocket（非TCP/UDP）。
+
+---
+
+### 5. 代码注释与规范
+
+- 代码已采用JSDoc风格注释，符合你的要求。
+- 现有音频上传与分析逻辑无需更改，只需调整WebSocket端口即可。
+
+---
+
+如需进一步支持（如端口热切换、前端配置入口、TD端WebSocket DAT设置方法等），请告知你的具体需求！
+

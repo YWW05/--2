@@ -21,7 +21,7 @@ class AudioSocket {
   private readonly reconnectInterval = 3000;
   private messageQueue: AudioAnalysisData[] = [];
 
-  constructor(url = 'ws://localhost:7000') {
+  constructor(url = 'ws://localhost:8000') {
     this.url = url;
     this.connect();
     
@@ -157,4 +157,4 @@ class AudioSocket {
 }
 
 // 导出单例实例
-export const audioSocket = new AudioSocket(); 
+export const audioSocket = new AudioSocket('ws://localhost:8000'); 
